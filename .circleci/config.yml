@@ -5,10 +5,20 @@ executors:
     docker:
       - image: ruby:3.0.0
 
+  docker-in-docker:
+    docker:
+      - image: docker:18.06.1-ce
+
 workflows:
   run-tests:
     jobs:
-      - test-ruby
+      - test-ruby:
+          name: ruby-unit-tests
+      - deploy-ruby:
+          name: deploy-ruby
+          requires:
+            - ruby-unit-tests
+
 
 jobs:
   test-ruby:
@@ -20,4 +30,18 @@ jobs:
           command: bundler install
       - run:
           name: Run tests
-          command: rspec
+          command: rspec --format documentation
+
+  deploy-ruby:
+    executor: docker-in-docker
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: Build docker image
+          command: |
+            docker build . -t stevensim226/steven-ruby
+            echo $DOCKER_USERNAME
+            echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+            docker push stevensim226/steven-ruby:latest
