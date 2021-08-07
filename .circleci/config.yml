@@ -1,0 +1,23 @@
+version: 2.1
+
+executors:
+  ruby:
+    docker:
+      - image: ruby:3.0.0
+
+workflows:
+  run-tests:
+    jobs:
+      - test-ruby
+
+jobs:
+  test-ruby:
+    executor: ruby
+    steps:
+      - checkout
+      - run: 
+          name: Install dependencies
+          command: bundler install
+      - run:
+          name: Run tests
+          command: rspec
