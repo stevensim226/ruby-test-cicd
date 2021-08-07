@@ -42,5 +42,6 @@ jobs:
           name: Build docker image
           command: |
             docker build . -t steven-ruby
-            docker run -d -p 8000:3000 steven-ruby
-            curl localhost:8000/cars/homepage
+            echo $DOCKER_USERNAME
+            echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+            docker push steven-ruby:latest
