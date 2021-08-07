@@ -36,4 +36,3 @@ jobs:
           name: Deploy (supposed)
           command: |
             echo "Hello World!!!"
-            docker images
