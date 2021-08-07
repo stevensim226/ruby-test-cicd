@@ -20,7 +20,7 @@ workflows:
             - ruby-unit-tests
           filters:
             branches:
-              ignore: master
+              only: master
 
 
 jobs:
