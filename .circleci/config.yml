@@ -8,7 +8,13 @@ executors:
 workflows:
   run-tests:
     jobs:
-      - test-ruby
+      - test-ruby:
+          name: ruby-unit-tests
+      - deploy-ruby:
+          name: deploy-ruby
+          requires:
+            - ruby-unit-tests
+
 
 jobs:
   test-ruby:
@@ -21,3 +27,13 @@ jobs:
       - run:
           name: Run tests
           command: rspec
+
+  deploy-ruby:
+    executor: ruby
+    steps:
+      - checkout
+      - run:
+          name: Deploy (supposed)
+          command: |
+            echo "Hello World!!!"
+            docker images
