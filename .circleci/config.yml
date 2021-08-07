@@ -18,6 +18,9 @@ workflows:
           name: deploy-ruby
           requires:
             - ruby-unit-tests
+          filters:
+            branches:
+              only: master
 
 
 jobs:
@@ -42,6 +45,5 @@ jobs:
           name: Build docker image
           command: |
             docker build . -t stevensim226/steven-ruby
-            echo $DOCKER_USERNAME
             echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
             docker push stevensim226/steven-ruby:latest
