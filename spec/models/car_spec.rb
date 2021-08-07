@@ -11,7 +11,7 @@ RSpec.describe Car, type: :model do
     end
 
     it 'ensure name getter' do
-      expect(@c1.name).to eq("Car Onee")
+      expect(@c1.name).to eq("Car One")
     end
 
     it 'ensure license getter' do
