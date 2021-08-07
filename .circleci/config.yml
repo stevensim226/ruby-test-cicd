@@ -5,6 +5,10 @@ executors:
     docker:
       - image: ruby:3.0.0
 
+  docker-in-docker:
+    docker:
+      - image: docker:19.03
+
 workflows:
   run-tests:
     jobs:
@@ -29,10 +33,12 @@ jobs:
           command: rspec --format documentation
 
   deploy-ruby:
-    executor: ruby
+    executor: docker-in-docker
     steps:
       - checkout
       - run:
-          name: Deploy (supposed)
+          name: Build docker image
           command: |
-            echo "Hello World!!!"
+            docker build . -t steven-ruby
+            docker run -d -p 8000:3000 steven-ruby
+            curl localhost:8000/cars/homepage
