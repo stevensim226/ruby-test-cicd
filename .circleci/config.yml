@@ -10,6 +10,10 @@ executors:
       - image: docker:18.06.1-ce
 
 workflows:
+  do-something:
+    jobs:
+      - print-something:
+          name: OK
   run-tests:
     jobs:
       - test-ruby:
@@ -24,6 +28,14 @@ workflows:
 
 
 jobs:
+  print-something: 
+    executor: ruby
+    steps:
+      - run:
+          name: print hello world
+          command: |
+            echo "Hello World!"
+            ls
   test-ruby:
     executor: ruby
     steps:
